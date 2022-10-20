@@ -4,6 +4,8 @@ const rainbowPaintButton = document.getElementById("rainbow-paint");
 const eraserButton = document.getElementById("eraser");
 const clearButton = document.getElementById("clear");
 const canvas = document.getElementById("canvas");
+const sizeSlider = document.getElementById("size");
+const sizeLabel = document.getElementById("size-label");
 const pixels = [];
 let selectedButton;
 
@@ -11,16 +13,32 @@ paintButton.addEventListener("click", () => { buttonSelect(paintButton); });
 rainbowPaintButton.addEventListener("click", () => { buttonSelect(rainbowPaintButton); });
 eraserButton.addEventListener("click", () => { buttonSelect(eraserButton); });
 clearButton.addEventListener("click", clear);
+sizeSlider.addEventListener("input", setSize);
 
 buttonSelect(paintButton);
+setSize();
 
-for (let i = 0; i < 256; i++) {
-    const pixel = document.createElement("div");
-    pixel.classList.add("pixel");
-    pixel.addEventListener("mousedown", (e) => { selectPixel(e, pixel); });
-    pixel.addEventListener("mouseover", (e) => { selectPixel(e, pixel); });
-    canvas.appendChild(pixel);
-    pixels.push(pixel);
+function setSize() {
+    for (pixel of pixels) {
+        pixel.remove();
+    }
+
+    while(pixels.length > 0) {
+        pixels.pop();
+    }
+
+    for (let i = 0; i < size.value ** 2; i++) {
+        const pixel = document.createElement("div");
+        pixel.classList.add("pixel");
+        pixel.addEventListener("mousedown", (e) => { selectPixel(e, pixel); });
+        pixel.addEventListener("mouseover", (e) => { selectPixel(e, pixel); });
+        canvas.appendChild(pixel);
+        pixels.push(pixel);
+        pixel.style.height = "calc(600px / " + size.value + ")";
+        pixel.style.width = "calc(600px / " + size.value + ")";
+    }
+    
+    sizeLabel.innerHTML = "Canvas Size: " + size.value + " x " + size.value;
 }
 
 function selectPixel(e, pixel) {
