@@ -59,10 +59,6 @@ h2 {
     flex-wrap: wrap;
 }
 
-.pixel:nth-child(3n) {
-    background-color: black;
-}
-
 .pixel {
     height: calc(600px / 16);
     width: calc(600px / 16);
@@ -103,6 +99,7 @@ button {
     border-color: #f7f7f7;
     border-style: solid;
     border-radius: .3em;
+    cursor: pointer;
 }
 
 button:hover, .selected {
