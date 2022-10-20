@@ -5,19 +5,20 @@ const eraserButton = document.getElementById("eraser");
 const clearButton = document.getElementById("clear");
 const canvas = document.getElementById("canvas");
 const pixels = [];
+let selectedButton;
 
-paintButton.addEventListener("click", () => { selectButton(paintButton); });
-rainbowPaintButton.addEventListener("click", () => { selectButton(rainbowPaintButton); });
-eraserButton.addEventListener("click", () => { selectButton(eraserButton); });
+paintButton.addEventListener("click", () => { buttonSelect(paintButton); });
+rainbowPaintButton.addEventListener("click", () => { buttonSelect(rainbowPaintButton); });
+eraserButton.addEventListener("click", () => { buttonSelect(eraserButton); });
 clearButton.addEventListener("click", clear);
 
-selectButton(paintButton);
+buttonSelect(paintButton);
 
 for (let i = 0; i < 256; i++) {
     const pixel = document.createElement("div");
     pixel.classList.add("pixel");
     pixel.addEventListener("mousedown", (e) => { selectPixel(e, pixel); });
-    pixel.addEventListener("mousemove", (e) => { selectPixel(e, pixel); });
+    pixel.addEventListener("mouseover", (e) => { selectPixel(e, pixel); });
     canvas.appendChild(pixel);
     pixels.push(pixel);
 }
@@ -29,7 +30,8 @@ function selectPixel(e, pixel) {
     }
 }
 
-function selectButton(selectedButton) {
+function buttonSelect(selection) {
+    selectedButton = selection;
     paintButton.classList.remove("selected");
     rainbowPaintButton.classList.remove("selected");
     eraserButton.classList.remove("selected");
@@ -37,7 +39,18 @@ function selectButton(selectedButton) {
 }
 
 function paintPixel(pixel) {
-    pixel.style.backgroundColor = colorInput.value;
+    switch (selectedButton.id) {
+        case "paint":
+            pixel.style.backgroundColor = colorInput.value;
+            break;
+        case "rainbow-paint":
+            pixel.style.backgroundColor = "#" + Math.floor(Math.random() * 256).toString(16) 
+            + Math.floor(Math.random() * 256).toString(16) + Math.floor(Math.random() * 256).toString(16);
+            break;
+        case "eraser":
+            pixel.style.backgroundColor = "white";
+            break;
+    }
 }
 
 function clear() {
