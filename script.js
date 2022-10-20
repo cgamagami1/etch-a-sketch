@@ -19,6 +19,7 @@ buttonSelect(paintButton);
 setSize();
 
 function setSize() {
+    //remove pixels and empty pixel array
     for (pixel of pixels) {
         pixel.remove();
     }
@@ -27,11 +28,12 @@ function setSize() {
         pixels.pop();
     }
 
+    //generate new pixel grid 
     for (let i = 0; i < size.value ** 2; i++) {
         const pixel = document.createElement("div");
         pixel.classList.add("pixel");
-        pixel.addEventListener("mousedown", (e) => { selectPixel(e, pixel); });
-        pixel.addEventListener("mouseover", (e) => { selectPixel(e, pixel); });
+        pixel.addEventListener("mousedown", paintPixel);
+        pixel.addEventListener("mouseover", paintPixel);
         canvas.appendChild(pixel);
         pixels.push(pixel);
         pixel.style.height = "calc(600px / " + size.value + ")";
@@ -39,13 +41,6 @@ function setSize() {
     }
     
     sizeLabel.innerHTML = "Canvas Size: " + size.value + " x " + size.value;
-}
-
-function selectPixel(e, pixel) {
-    if(e.buttons == 1){
-        paintPixel(pixel);
-        e.preventDefault();
-    }
 }
 
 function buttonSelect(selection) {
@@ -56,19 +51,23 @@ function buttonSelect(selection) {
     selectedButton.classList.add("selected");
 }
 
-function paintPixel(pixel) {
-    switch (selectedButton.id) {
-        case "paint":
-            pixel.style.backgroundColor = colorInput.value;
-            break;
-        case "rainbow-paint":
-            pixel.style.backgroundColor = "#" + Math.floor(Math.random() * 256).toString(16) 
-            + Math.floor(Math.random() * 256).toString(16) + Math.floor(Math.random() * 256).toString(16);
-            break;
-        case "eraser":
-            pixel.style.backgroundColor = "white";
-            break;
+function paintPixel(e) {
+    if(e.buttons == 1){
+        e.preventDefault(); // preventDefault() stops user from grabbing the element. Can also use "user-select: none;" in CSS
+        switch (selectedButton.id) {
+            case "paint":
+                e.target.style.backgroundColor = colorInput.value;
+                break;
+            case "rainbow-paint":
+                e.target.style.backgroundColor = "#" + Math.floor(Math.random() * 256).toString(16) 
+                + Math.floor(Math.random() * 256).toString(16) + Math.floor(Math.random() * 256).toString(16);
+                break;
+            case "eraser":
+                e.target.style.backgroundColor = "white";
+                break;
+        }
     }
+    
 }
 
 function clear() {
