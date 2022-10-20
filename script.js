@@ -52,7 +52,7 @@ function buttonSelect(selection) {
 }
 
 function paintPixel(e) {
-    if(e.buttons == 1){
+    if(e.buttons === 1){
         e.preventDefault(); // preventDefault() stops user from grabbing the element. Can also use "user-select: none;" in CSS
         switch (selectedButton.id) {
             case "paint":
