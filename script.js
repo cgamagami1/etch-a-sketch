@@ -40,7 +40,7 @@ function setSize() {
         pixel.style.width = "calc(600px / " + size.value + ")";
     }
     
-    sizeLabel.innerHTML = "Canvas Size: " + size.value + " x " + size.value;
+    sizeLabel.textContent = "Canvas Size: " + size.value + " x " + size.value;
 }
 
 function buttonSelect(selection) {
