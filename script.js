@@ -14,6 +14,8 @@ rainbowPaintButton.addEventListener("click", () => { buttonSelect(rainbowPaintBu
 eraserButton.addEventListener("click", () => { buttonSelect(eraserButton); });
 clearButton.addEventListener("click", clear);
 sizeSlider.addEventListener("input", setSize);
+canvas.addEventListener("mousedown", paintPixel);
+canvas.addEventListener("mouseover", paintPixel);
 
 buttonSelect(paintButton);
 setSize();
@@ -32,8 +34,6 @@ function setSize() {
     for (let i = 0; i < size.value ** 2; i++) {
         const pixel = document.createElement("div");
         pixel.classList.add("pixel");
-        pixel.addEventListener("mousedown", paintPixel);
-        pixel.addEventListener("mouseover", paintPixel);
         canvas.appendChild(pixel);
         pixels.push(pixel);
         pixel.style.height = "calc(600px / " + size.value + ")";
@@ -45,9 +45,11 @@ function setSize() {
 
 function buttonSelect(selection) {
     selectedButton = selection;
-    paintButton.classList.remove("selected");
-    rainbowPaintButton.classList.remove("selected");
-    eraserButton.classList.remove("selected");
+
+    for (const btn of [paintButton, rainbowPaintButton, eraserButton]) {
+        btn.classList.remove("selected");
+    }
+
     selectedButton.classList.add("selected");
 }
 
@@ -59,8 +61,7 @@ function paintPixel(e) {
                 e.target.style.backgroundColor = colorInput.value;
                 break;
             case "rainbow-paint":
-                e.target.style.backgroundColor = "#" + Math.floor(Math.random() * 256).toString(16) 
-                + Math.floor(Math.random() * 256).toString(16) + Math.floor(Math.random() * 256).toString(16);
+                e.target.style.backgroundColor = randomColorHex();
                 break;
             case "eraser":
                 e.target.style.backgroundColor = "white";
@@ -74,4 +75,12 @@ function clear() {
     for (pixel of pixels) {
         pixel.style.backgroundColor = "white";
     }
+}
+
+function randomColorHex() {
+    return "#" + randomByte() + randomByte() + randomByte();
+}
+
+function randomByte() {
+    return Math.floor(Math.random() * 256).toString(16);
 }
